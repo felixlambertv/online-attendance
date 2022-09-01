@@ -1,0 +1,10 @@
+appName: online-attendance
+server:
+  port: 3000
+database:
+  host: localhost
+  driver: postgres
+  user: admin
+  password: admin
+  name: online_attendance
+  port: 5432
