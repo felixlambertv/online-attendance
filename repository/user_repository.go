@@ -15,9 +15,9 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 
 type UserRepository interface {
 	Save(user entity.User) (entity.User, error)
-	GetAllUsers() ([]entity.User, error)
-	GetUser(userId uint) (entity.User, error)
-	WithTrx(db *gorm.DB) userRepository
+	FindAll() ([]entity.User, error)
+	FindById(userId uint) (entity.User, error)
+	DeleteUser(userId uint) error
 }
 
 func (u userRepository) Save(user entity.User) (entity.User, error) {
@@ -25,7 +25,7 @@ func (u userRepository) Save(user entity.User) (entity.User, error) {
 	return user, err
 }
 
-func (u userRepository) GetAllUsers() (users []entity.User, err error) {
+func (u userRepository) FindAll() (users []entity.User, err error) {
 	err = u.DB.Find(&users).Error
 	if err != nil {
 		panic(err)
@@ -33,15 +33,11 @@ func (u userRepository) GetAllUsers() (users []entity.User, err error) {
 	return users, err
 }
 
-func (u userRepository) GetUser(userId uint) (user entity.User, err error) {
+func (u userRepository) FindById(userId uint) (user entity.User, err error) {
 	err = u.DB.First(&user, userId).Error
 	return user, err
 }
 
-func (u userRepository) WithTrx(trxHandle *gorm.DB) userRepository {
-	if trxHandle == nil {
-		return u
-	}
-	u.DB = trxHandle
-	return u
+func (u userRepository) DeleteUser(userId uint) (err error) {
+	return u.DB.Delete(&entity.User{}, userId).Error
 }

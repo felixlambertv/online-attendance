@@ -1,7 +1,9 @@
 package response
 
 type BaseResponse struct {
-	Status  int    `json:"status"`
-	Data    any    `json:"data"`
-	Message string `json:"message"`
+	HttpCode int    `json:"-"`
+	Success  bool   `json:"success"`
+	Errors   any    `json:"errors,omitempty"`
+	Data     any    `json:"data,omitempty"`
+	Message  string `json:"message"`
 }

@@ -32,6 +32,7 @@ func SetupServer(db *gorm.DB) *gin.Engine {
 		{
 			userRoutes.POST("/", userController.Register)
 			userRoutes.GET("/:userId", userController.Detail)
+			userRoutes.DELETE("/:userId", userController.Delete)
 		}
 	}
 
