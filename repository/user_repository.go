@@ -35,9 +35,6 @@ func (u userRepository) GetAllUsers() (users []entity.User, err error) {
 
 func (u userRepository) GetUser(userId uint) (user entity.User, err error) {
 	err = u.DB.First(&user, userId).Error
-	if err != nil {
-		return user, err
-	}
 	return user, err
 }
 

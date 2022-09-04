@@ -1,10 +1,13 @@
 package controller
 
 import (
+	"errors"
+	"github.com/felixlambertv/online-attendance/exception"
 	"github.com/felixlambertv/online-attendance/model/request"
 	"github.com/felixlambertv/online-attendance/service"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
+	"gorm.io/gorm"
 	"net/http"
 )
 
@@ -23,13 +26,19 @@ func NewUserController(userService service.IUserService) IUserController {
 
 func (u UserController) Detail(ctx *gin.Context) {
 	var req request.UserDetail
-	err := ctx.BindUri(&req)
+	err := ctx.ShouldBindUri(&req)
 	if err != nil {
-		logrus.Error("invalid request")
+		ctx.Error(exception.NewAppException("wrong user id"))
+		return
 	}
 	user, err := u.userService.FindUser(req.UserId)
 	if err != nil {
-		logrus.Error("User not found")
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.Error(exception.NewDataNotFoundException("User"))
+		} else {
+			ctx.Error(errors.New("something wrong"))
+		}
+		return
 	}
 
 	ctx.JSON(http.StatusOK, user)
