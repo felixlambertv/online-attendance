@@ -10,7 +10,6 @@ import (
 
 func ErrorHandler(ctx *gin.Context) {
 	ctx.Next()
-
 	for _, err := range ctx.Errors {
 		var res response.BaseResponse
 		res.Message = err.Error()
