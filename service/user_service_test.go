@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-var userRepoMock = new(mocks.UserRepository)
+var userRepoMock = new(mocks.IUserRepository)
 var service = NewUserService(userRepoMock)
 var dummyUser = entity.User{
 	ID:        1,
@@ -41,7 +41,7 @@ func TestUserService_FindUser(t *testing.T) {
 }
 
 func TestUserService_Register(t *testing.T) {
-	register, err := service.Register(request.UserRegister{Name: "Test"})
+	register, err := service.Register(request.UserRequest{Name: "Test"})
 	if err != nil {
 		return
 	}

@@ -1,5 +1,5 @@
 package request
 
-type UserRegister struct {
+type UserRequest struct {
 	Name string `form:"name" binding:"required"`
 }

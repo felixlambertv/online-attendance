@@ -27,6 +27,11 @@ func (_m *IUserController) Register(ctx *gin.Context) {
 	_m.Called(ctx)
 }
 
+// Update provides a mock function with given fields: ctx
+func (_m *IUserController) Update(ctx *gin.Context) {
+	_m.Called(ctx)
+}
+
 type mockConstructorTestingTNewIUserController interface {
 	mock.TestingT
 	Cleanup(func())

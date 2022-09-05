@@ -14,6 +14,7 @@ import (
 type IUserController interface {
 	Detail(ctx *gin.Context)
 	Register(ctx *gin.Context)
+	Update(ctx *gin.Context)
 	Delete(ctx *gin.Context)
 }
 
@@ -50,7 +51,7 @@ func (u UserController) Detail(ctx *gin.Context) {
 }
 
 func (u UserController) Register(ctx *gin.Context) {
-	var req request.UserRegister
+	var req request.UserRequest
 	err := ctx.ShouldBind(&req)
 	if err != nil {
 		ctx.Error(err)
@@ -85,5 +86,33 @@ func (u UserController) Delete(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, response.BaseResponse{
 		Success: true,
 		Message: "Success delete user",
+	})
+}
+
+func (u UserController) Update(ctx *gin.Context) {
+	var req request.UserRequest
+	err := ctx.ShouldBind(&req)
+	if err != nil {
+		ctx.Error(err)
+		return
+	}
+
+	var userDetail request.UserDetail
+	err = ctx.ShouldBindUri(&userDetail)
+	if err != nil {
+		ctx.Error(exception.NewAppException("wrong user id"))
+		return
+	}
+
+	user, err := u.userService.Update(userDetail.UserId, req)
+	if err != nil {
+		ctx.Error(errors.New("something wrong"))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, response.BaseResponse{
+		Success: true,
+		Data:    user,
+		Message: "Success update user",
 	})
 }

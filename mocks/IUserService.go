@@ -50,19 +50,40 @@ func (_m *IUserService) FindUser(userId uint) (entity.User, error) {
 }
 
 // Register provides a mock function with given fields: _a0
-func (_m *IUserService) Register(_a0 request.UserRegister) (entity.User, error) {
+func (_m *IUserService) Register(_a0 request.UserRequest) (entity.User, error) {
 	ret := _m.Called(_a0)
 
 	var r0 entity.User
-	if rf, ok := ret.Get(0).(func(request.UserRegister) entity.User); ok {
+	if rf, ok := ret.Get(0).(func(request.UserRequest) entity.User); ok {
 		r0 = rf(_a0)
 	} else {
 		r0 = ret.Get(0).(entity.User)
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(request.UserRegister) error); ok {
+	if rf, ok := ret.Get(1).(func(request.UserRequest) error); ok {
 		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Update provides a mock function with given fields: userId, _a1
+func (_m *IUserService) Update(userId uint, _a1 request.UserRequest) (entity.User, error) {
+	ret := _m.Called(userId, _a1)
+
+	var r0 entity.User
+	if rf, ok := ret.Get(0).(func(uint, request.UserRequest) entity.User); ok {
+		r0 = rf(userId, _a1)
+	} else {
+		r0 = ret.Get(0).(entity.User)
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(uint, request.UserRequest) error); ok {
+		r1 = rf(userId, _a1)
 	} else {
 		r1 = ret.Error(1)
 	}
